@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>GamepadToolkit.App</RootNamespace>
+    <AssemblyName>GamepadToolkit</AssemblyName>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>appicon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GamepadToolkit.Core\GamepadToolkit.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Also embedded as a resource so the window chrome and taskbar get the crisp
+         per-size frames rather than a rescaled shell icon. -->
+    <Resource Include="appicon.ico" />
+  </ItemGroup>
+
+</Project>

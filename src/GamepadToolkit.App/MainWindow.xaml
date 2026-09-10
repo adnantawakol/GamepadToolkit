@@ -1,0 +1,205 @@
+<Window x:Class="GamepadToolkit.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Gamepad Toolkit" Height="780" Width="1200"
+        Icon="appicon.ico"
+        MinHeight="600" MinWidth="900"
+        Background="{StaticResource Bg}"
+        WindowStartupLocation="CenterScreen"
+        TextOptions.TextFormattingMode="Display">
+
+    <DockPanel>
+
+        <Border DockPanel.Dock="Top" Background="{StaticResource Panel}" BorderBrush="{StaticResource Border}"
+                BorderThickness="0,0,0,1" Padding="20,14">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="Gamepad Toolkit" FontSize="17" FontWeight="SemiBold" VerticalAlignment="Center" />
+                    <Border Background="{StaticResource PanelAlt}" CornerRadius="4" Padding="7,3" Margin="12,0,0,0"
+                            VerticalAlignment="Center">
+                        <TextBlock x:Name="DeviceCountBadge" Text="0 controllers" Style="{StaticResource Label}" />
+                    </Border>
+                </StackPanel>
+                <Button x:Name="RefreshButton" Content="Rescan devices" HorizontalAlignment="Right"
+                        Click="OnRefreshClick" Margin="0" />
+            </Grid>
+        </Border>
+
+        <Border DockPanel.Dock="Bottom" Background="{StaticResource Panel}" BorderBrush="{StaticResource Border}"
+                BorderThickness="0,1,0,0" Padding="20,9">
+            <TextBlock x:Name="StatusText" Text="Ready." Style="{StaticResource Label}" />
+        </Border>
+
+        <TabControl Margin="16,12,16,12">
+
+            <TabItem Header="Devices">
+                <Grid Margin="0,12,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="330" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <ListBox x:Name="DeviceList" Grid.Column="0" Margin="0,0,16,0"
+                             SelectionChanged="OnDeviceSelected" />
+
+                    <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <Border Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <TextBlock Text="Device details" Style="{StaticResource H1}" />
+                                    <StackPanel x:Name="DetailsPanel" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,10">
+                                        <TextBlock Text="Live input" Style="{StaticResource H1}" Margin="0" />
+                                        <TextBlock x:Name="LiveHint" HorizontalAlignment="Right"
+                                                   Style="{StaticResource Label}" Text="" />
+                                    </Grid>
+                                    <WrapPanel x:Name="ButtonLights" Margin="0,0,0,14" />
+                                    <StackPanel x:Name="AxisBars" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Remap">
+                <Grid Margin="0,12,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="360" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" Style="{StaticResource Card}" Margin="0,0,16,0">
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Top" Text="Button mapping" Style="{StaticResource H1}" />
+                            <TextBlock DockPanel.Dock="Top" Style="{StaticResource Label}" Margin="0,0,0,14"
+                                       Text="Each physical button on the left is reported to games as the control on the right." />
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel x:Name="MapRows" />
+                            </ScrollViewer>
+                        </DockPanel>
+                    </Border>
+
+                    <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <Border Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <TextBlock Text="Profile" Style="{StaticResource H1}" />
+                                    <TextBlock Text="Name" Style="{StaticResource Label}" Margin="0,0,0,4" />
+                                    <TextBox x:Name="ProfileName" Text="Swap X / Y" Margin="0,0,0,10" />
+                                    <TextBlock Text="Description" Style="{StaticResource Label}" Margin="0,0,0,4" />
+                                    <TextBox x:Name="ProfileDescription" Height="52" AcceptsReturn="True"
+                                             TextWrapping="Wrap" Margin="0,0,0,12" />
+                                    <WrapPanel>
+                                        <Button Content="Swap X / Y" Click="OnPresetSwapXyClick" Margin="0,0,8,8" />
+                                        <Button Content="Swap A / B" Click="OnPresetSwapAbClick" Margin="0,0,8,8" />
+                                        <Button Content="Swap both" Click="OnPresetSwapBothClick"
+                                                Style="{StaticResource AccentButton}" Margin="0,0,8,8" />
+                                        <Button Content="Reset" Click="OnResetMappingClick" Margin="0,0,0,8" />
+                                    </WrapPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <TextBlock Text="Controllers to remap" Style="{StaticResource H1}" />
+                                    <TextBlock Style="{StaticResource Label}" Margin="0,0,0,10"
+                                               Text="Tick each controller to remap. Press a button on a pad and its row will flash, so you can tell which is which." />
+                                    <StackPanel x:Name="SourceSlots" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <TextBlock Text="Apply" Style="{StaticResource H1}" />
+                                    <TextBlock x:Name="DriverStatus" Style="{StaticResource Label}" Margin="0,0,0,10" />
+                                    <TextBlock x:Name="HidHideStatus" Style="{StaticResource Label}" Margin="0,0,0,10" />
+                                    <Button x:Name="InstallDriversButton" Content="Install missing drivers…"
+                                            Click="OnInstallDriversClick" HorizontalAlignment="Stretch"
+                                            Margin="0,0,0,10" />
+                                    <TextBlock Text="Hide from games" FontWeight="SemiBold" Margin="0,0,0,2" />
+                                    <TextBlock Style="{StaticResource Label}" Margin="0,0,0,6"
+                                               Text="Hide each controller you are remapping, so games see only its virtual counterpart." />
+                                    <StackPanel x:Name="HideList" Margin="0,0,0,8" />
+                                    <Button x:Name="ElevateButton" Content="Restart as administrator"
+                                            Click="OnElevateClick" HorizontalAlignment="Stretch"
+                                            Margin="0,0,0,10" Visibility="Collapsed" />
+                                    <Button x:Name="StartStopButton" Content="Start remapping"
+                                            Style="{StaticResource AccentButton}" Click="OnStartStopClick"
+                                            HorizontalAlignment="Stretch" Margin="0,0,0,10" />
+                                    <WrapPanel>
+                                        <Button Content="Export profile" Click="OnExportProfileClick" Margin="0,0,8,0" />
+                                        <Button Content="Import profile" Click="OnImportProfileClick" Margin="0" />
+                                    </WrapPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource Card}">
+                                <StackPanel>
+                                    <TextBlock Text="Stick tuning" Style="{StaticResource H1}" />
+                                    <TextBlock x:Name="LeftDeadzoneLabel" Style="{StaticResource Label}" Text="Left deadzone: 0" />
+                                    <Slider x:Name="LeftDeadzone" Minimum="0" Maximum="12000" Margin="0,2,0,10"
+                                            ValueChanged="OnDeadzoneChanged" />
+                                    <TextBlock x:Name="RightDeadzoneLabel" Style="{StaticResource Label}" Text="Right deadzone: 0" />
+                                    <Slider x:Name="RightDeadzone" Minimum="0" Maximum="12000" Margin="0,2,0,10"
+                                            ValueChanged="OnDeadzoneChanged" />
+                                    <CheckBox x:Name="InvertLeftY" Content="Invert left stick Y" Checked="OnOptionToggled"
+                                              Unchecked="OnOptionToggled" />
+                                    <CheckBox x:Name="InvertRightY" Content="Invert right stick Y" Checked="OnOptionToggled"
+                                              Unchecked="OnOptionToggled" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Firmware">
+                <ScrollViewer Margin="0,12,0,0" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <Border Style="{StaticResource Card}">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,10">
+                                    <TextBlock Text="Firmware access" Style="{StaticResource H1}" Margin="0" />
+                                    <Border x:Name="AccessBadge" HorizontalAlignment="Right" CornerRadius="4"
+                                            Padding="9,3" Background="{StaticResource PanelAlt}">
+                                        <TextBlock x:Name="AccessBadgeText" Text="Not probed" FontSize="12"
+                                                   FontWeight="SemiBold" />
+                                    </Border>
+                                </Grid>
+                                <TextBlock x:Name="FirmwareSummary" Text="Select a device on the Devices tab."
+                                           FontWeight="SemiBold" Margin="0,0,0,8" />
+                                <TextBlock x:Name="FirmwareDetail" Style="{StaticResource Label}" />
+                                <WrapPanel Margin="0,16,0,0">
+                                    <Button x:Name="BackupFirmwareButton" Content="Back up firmware"
+                                            Click="OnBackupFirmwareClick" />
+                                    <Button x:Name="RestoreFirmwareButton" Content="Restore firmware"
+                                            Click="OnRestoreFirmwareClick" />
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource Card}">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,10">
+                                    <TextBlock Text="UF2 bootloader volumes" Style="{StaticResource H1}" Margin="0" />
+                                    <Button Content="Rescan" HorizontalAlignment="Right" Margin="0"
+                                            Click="OnRescanBootloadersClick" />
+                                </Grid>
+                                <TextBlock Style="{StaticResource Label}" Margin="0,0,0,12"
+                                           Text="Boards in a UF2 bootloader (RP2040 held in BOOTSEL, Adafruit SAMD/nRF) appear as removable drives and support a genuine full dump and reflash." />
+                                <StackPanel x:Name="BootloaderPanel" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+        </TabControl>
+    </DockPanel>
+</Window>

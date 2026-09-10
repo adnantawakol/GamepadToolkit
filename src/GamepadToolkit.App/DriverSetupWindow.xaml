@@ -1,0 +1,48 @@
+﻿<Window x:Class="GamepadToolkit.App.DriverSetupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Gamepad Toolkit — required drivers" Height="560" Width="680"
+        Icon="appicon.ico"
+        Background="{StaticResource Bg}"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize"
+        TextOptions.TextFormattingMode="Display">
+
+    <Grid Margin="22">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Some drivers are missing" Style="{StaticResource H1}" />
+
+        <TextBlock Grid.Row="1" Style="{StaticResource Label}" Margin="0,0,0,14" TextWrapping="Wrap"
+                   Text="Remapping needs two kernel drivers. They are free, open source, and can be uninstalled from Windows Settings at any time. Everything else in the toolkit works without them." />
+
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <StackPanel x:Name="DriverList" />
+
+                <Border x:Name="LogCard" Style="{StaticResource Card}" Visibility="Collapsed">
+                    <StackPanel>
+                        <TextBlock Text="Installer output" FontWeight="SemiBold" Margin="0,0,0,6" />
+                        <TextBox x:Name="LogBox" Style="{StaticResource LogBox}" Height="150" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <TextBlock Grid.Row="3" x:Name="StatusText" Style="{StaticResource Label}"
+                   Margin="0,12,0,10" TextWrapping="Wrap" />
+
+        <WrapPanel Grid.Row="4" HorizontalAlignment="Right">
+            <Button x:Name="RecheckButton" Content="Re-check" Click="OnRecheckClick" Margin="0,0,8,0" />
+            <Button x:Name="SkipButton" Content="Continue without them" Click="OnSkipClick" Margin="0,0,8,0" />
+            <Button x:Name="InstallButton" Content="Install missing drivers"
+                    Style="{StaticResource AccentButton}" Click="OnInstallClick" />
+        </WrapPanel>
+    </Grid>
+</Window>

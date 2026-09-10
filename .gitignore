@@ -1,0 +1,11 @@
+## .NET / Visual Studio build artifacts
+bin/
+obj/
+*.user
+
+## Published outputs (build these locally with `dotnet publish`)
+/Installed/
+/Portable/
+
+## IDE
+.vs/
