@@ -25,6 +25,12 @@ So the app is split into three pieces:
   permits it (UF2 volumes, VIA-compatible keyboards) and otherwise reports
   honestly why it can't, instead of pretending to succeed.
 
+## Download
+
+[**Download the portable build (v1.0.0)**](https://github.com/adnantawakol/GamepadToolkit/releases/download/v1.0.0/GamepadToolkit.exe) —
+a single self-contained `GamepadToolkit.exe`. No installer, no .NET runtime
+needed. Copy it anywhere and run it.
+
 ## Project layout
 
 ```
